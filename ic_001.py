@@ -15,7 +15,7 @@ def menu():
       select_station()
       break
     elif function == 2:
-      charge( balance=0 )
+      charge( balance )
       break
     elif function == 99:
       print("システムを終了します．")
@@ -45,13 +45,16 @@ def select_station():
 
       if station == 1:
         print(f"乗車駅は秋葉原で運賃は {akibahara_fare} 円です")
-        break
+        return  akibahara_fare
+        
       elif station == 2:
         print(f"乗車駅は山梨で運賃は {yamanashi_fare} 円です")
-        break
+        return yamanashi_fare
+      
       elif station == 3:
         print(f"乗車駅は長野で運賃は {nagano_fare} 円です")
-        break
+        return nagano_fare
+
       elif station == 99:
         print("駅の選択をキャンセルしました．")
         break
@@ -59,9 +62,28 @@ def select_station():
         print("正しい数値を入力して下さい．")
 
 
-def pay():
-  #ここに処理の中身を書く。()カッコ内の引数はある場合は書く。
-  pass #このpassは処理を書いた後消してよい。
+def pay(balance, fare):
+  balance = 500
+  fare = select_station()
+  new_balance = balance - fare
+
+  print(f"チャージ残高は {balance}円です． ")
+  
+
+  if new_balance >= 500:
+    print(f"チャージ残高は{balance}円です．")
+    print(f"精算後のチャージ残高は{new_balance}円です．")
+    return new_balance
+
+  elif new_balance < 500:
+      print(f"チャージ残高は{balance}円です．")
+      if balance < fare:
+         print("残高不足です．")
+      while new_balance > 500:
+         print("残高が500円未満のため3000円自動チャージします．")
+         new_balance += 3000
+      print(f"精算後のチャージ残高は{new_balance}円です．")
+      return new_balance
 
 
 def charge( balance ):
