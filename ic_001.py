@@ -12,10 +12,10 @@ def menu():
         continue
 
     if function == 1:
-      select_station()
+      select_station(fare=0)
       break
     elif function == 2:
-      charge( balance )
+      charge() 
       break
     elif function == 99:
       print("システムを終了します．")
@@ -24,7 +24,7 @@ def menu():
       print("正しい数値を入力して下さい．")
 
 
-def select_station():
+def select_station(fare):
 #各駅の運賃一覧
   akibahara_fare = 133
   yamanashi_fare = 4128
@@ -45,15 +45,15 @@ def select_station():
 
       if station == 1:
         print(f"乗車駅は秋葉原で運賃は {akibahara_fare} 円です")
-        return  akibahara_fare
+        return  pay( balance=500, fare=akibahara_fare)
         
       elif station == 2:
         print(f"乗車駅は山梨で運賃は {yamanashi_fare} 円です")
-        return yamanashi_fare
+        return  pay( balance=500, fare=yamanashi_fare)
       
       elif station == 3:
         print(f"乗車駅は長野で運賃は {nagano_fare} 円です")
-        return nagano_fare
+        return  pay( balance=500, fare=akibahara_fare)
 
       elif station == 99:
         print("駅の選択をキャンセルしました．")
@@ -62,31 +62,32 @@ def select_station():
         print("正しい数値を入力して下さい．")
 
 
+
 def pay(balance, fare):
-  balance = 500
-  fare = select_station()
-  new_balance = balance - fare
+   new_balance = balance - fare 
+  #balance:今のチャージ残高，fare:運賃
+   print(f"チャージ残高は{balance}円です．")
 
-  print(f"チャージ残高は {balance}円です． ")
-  
-
-  if new_balance >= 500:
-    print(f"チャージ残高は{balance}円です．")
-    print(f"精算後のチャージ残高は{new_balance}円です．")
-    return new_balance
-
-  elif new_balance < 500:
-      print(f"チャージ残高は{balance}円です．")
-      if balance < fare:
-         print("残高不足です．")
-      while new_balance > 500:
-         print("残高が500円未満のため3000円自動チャージします．")
-         new_balance += 3000
+   if fare > balance:
+      print("残高不足です．")
+      while fare >= balance:
+         print("3000円自動チャージします．")
+         balance += 3000
+         new_balance = balance - fare 
       print(f"精算後のチャージ残高は{new_balance}円です．")
-      return new_balance
 
 
-def charge( balance ):
+   if new_balance < 500:#1回だけ
+      print("残高が500円未満のため3000円自動チャージします．")
+      new_balance += 3000
+
+   print(f"チャージ残高は{new_balance}円です．")
+
+
+
+
+
+def charge(  ):
 
   print("【チャージ機能】")
   print("チャージ残高は", balance, "円です．")
@@ -103,4 +104,6 @@ def main():
 if __name__ == "__main__":
     main()
 
-print(menu())
+#print(menu())
+print(charge())
+#print(pay(2106, 7990))
