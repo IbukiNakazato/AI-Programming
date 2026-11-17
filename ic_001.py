@@ -45,15 +45,15 @@ def select_station(fare):
 
       if station == 1:
         print(f"乗車駅は秋葉原で運賃は {akibahara_fare} 円です")
-        return  pay( balance=500, fare=akibahara_fare)
+        return  pay( current_balance=500, fare=akibahara_fare)
         
       elif station == 2:
         print(f"乗車駅は山梨で運賃は {yamanashi_fare} 円です")
-        return  pay( balance=500, fare=yamanashi_fare)
+        return  pay( current_balance=500, fare=yamanashi_fare)
       
       elif station == 3:
         print(f"乗車駅は長野で運賃は {nagano_fare} 円です")
-        return  pay( balance=500, fare=akibahara_fare)
+        return  pay( current_balance=500, fare=akibahara_fare)
 
       elif station == 99:
         print("駅の選択をキャンセルしました．")
@@ -63,17 +63,17 @@ def select_station(fare):
 
 
 
-def pay(balance, fare):
-   new_balance = balance - fare 
+def pay(current_balance, fare):
+   new_balance = current_balance - fare 
   #balance:今のチャージ残高，fare:運賃
-   print(f"チャージ残高は{balance}円です．")
+   print(f"チャージ残高は{current_balance}円です．")
 
-   if fare > balance:
+   if fare > current_balance:
       print("残高不足です．")
-      while fare >= balance:
+      while fare >= current_balance:
          print("3000円自動チャージします．")
-         balance += 3000
-         new_balance = balance - fare 
+         current_balance += 3000
+         new_balance = current_balance - fare 
       print(f"精算後のチャージ残高は{new_balance}円です．")
 
 
@@ -87,13 +87,30 @@ def pay(balance, fare):
 
 
 
-def charge(  ):
-
+def charge( current_balance ):
+  current_balance = 500
   print("【チャージ機能】")
-  print("チャージ残高は", balance, "円です．")
+  print("チャージ残高は", current_balance, "円です．")
   #print("チャージ残高は{balance}円です．")
-  #ここに処理の中身を書く。()カッコ内の引数はある場合は書く。
-  pass #このpassは処理を書いた後消してよい。
+  for i in range(1,11):
+     print(f"{i}:{i}000円")
+     i += 1
+  while True:
+    try:
+      charge_balance = int(input("チャージする金額を選択して下さい（キャンセルする場合には99を入力）"))
+      if 1 <= charge_balance <= 10: 
+        print(f"{charge_balance}000円チャージします．")
+        current_balance += charge_balance * 1000
+        print(f"チャージ残高は{current_balance}円です．")
+        return menu() 
+      elif charge_balance == 99:
+        print("チャージをキャンセルしました．")
+      else:
+         print("正しい数字を入力して下さい．")   
+
+    except ValueError:
+       print("数字を入力して下さい．")
+ 
 
 
 def main():
@@ -105,5 +122,5 @@ if __name__ == "__main__":
     main()
 
 #print(menu())
-print(charge())
+print(charge(20))
 #print(pay(2106, 7990))
